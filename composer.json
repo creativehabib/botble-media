@@ -1,0 +1,48 @@
+{
+    "name": "botble/media-manager",
+    "description": "Standalone Laravel package for the Botble CMS media manager.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0",
+        "illuminate/filesystem": "^10.0|^11.0",
+        "illuminate/http": "^10.0|^11.0",
+        "illuminate/routing": "^10.0|^11.0",
+        "illuminate/validation": "^10.0|^11.0",
+        "illuminate/database": "^10.0|^11.0",
+        "league/flysystem": "^3.0",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "aws/aws-sdk-php": "^3.0",
+        "intervention/image": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Botble\\Media\\": "src/",
+            "Botble\\Base\\": "src/Base/",
+            "Botble\\Support\\": "src/Support/",
+            "Botble\\Setting\\": "src/Setting/"
+        },
+        "files": [
+            "helpers/constants.php",
+            "helpers/common.php",
+            "helpers/framework.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Botble\\Media\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Botble\\Media\\Providers\\MediaServiceProvider"
+            ],
+            "aliases": {
+                "RvMedia": "Botble\\Media\\Facades\\RvMedia"
+            }
+        }
+    },
+    "minimum-stability": "stable"
+}

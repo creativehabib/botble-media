@@ -3,10 +3,10 @@
 namespace Botble\Media\Providers;
 
 use Aws\S3\S3Client;
-use Botble\Base\Facades\DashboardMenu;
-use Botble\Base\Supports\DashboardMenuItem;
+use Botble\Base\Supports\AdminHelper;
+use Botble\Base\Supports\BaseHelper;
+use Botble\Base\Supports\HtmlBuilder;
 use Botble\Base\Supports\ServiceProvider;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
 use Botble\Media\Chunks\Storage\ChunkStorage;
 use Botble\Media\Commands\ClearChunksCommand;
 use Botble\Media\Commands\CropImageCommand;
@@ -25,6 +25,7 @@ use Botble\Media\Repositories\Interfaces\MediaFolderInterface;
 use Botble\Media\Repositories\Interfaces\MediaSettingInterface;
 use Botble\Media\Storage\BunnyCDN\BunnyCDNAdapter;
 use Botble\Media\Storage\BunnyCDN\BunnyCDNClient;
+use Botble\Media\Supports\HookManager;
 use Botble\Setting\Supports\SettingStore;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Filesystem\AwsS3V3Adapter as IlluminateAwsS3V3Adapter;
@@ -40,10 +41,24 @@ use League\Flysystem\Filesystem;
  */
 class MediaServiceProvider extends ServiceProvider
 {
-    use LoadAndPublishDataTrait;
 
     public function register(): void
     {
+        $this->app->singleton('botble.base.helper', fn () => new BaseHelper());
+        $this->app->singleton('botble.base.html', fn () => new HtmlBuilder());
+        $this->app->singleton('botble.base.admin-helper', fn ($app) => new AdminHelper($app['router'], $app['request']));
+        $this->app->singleton(HookManager::class, fn ($app) => new HookManager($app));
+
+        $this->app->singleton(SettingStore::class, function ($app) {
+            $config = $app['config']->get('core.media.media.settings', []);
+
+            if (empty($config)) {
+                $config = $app['config']->get('media.settings', []);
+            }
+
+            return new SettingStore($config);
+        });
+
         $this->app->bind(MediaFileInterface::class, function () {
             return new MediaFileRepository(new MediaFile());
         });
@@ -158,45 +173,11 @@ class MediaServiceProvider extends ServiceProvider
                         'region' => $setting->get('media_aws_default_region', $config->get('filesystems.disks.s3.region')),
                         'bucket' => $setting->get('media_aws_bucket', $config->get('filesystems.disks.s3.bucket')),
                         'url' => $setting->get('media_aws_url', $config->get('filesystems.disks.s3.url')),
-                        'endpoint' => $setting->get('media_aws_endpoint', $config->get('filesystems.disks.s3.endpoint')) ?: null,
-                        'use_path_style_endpoint' => (bool) $setting->get('media_aws_use_path_style_endpoint', $config->get('filesystems.disks.s3.use_path_style_endpoint')),
                     ]);
 
                     break;
-                case 'r2':
-                    RvMedia::setR2Disk([
-                        'key' => $setting->get('media_r2_access_key_id'),
-                        'secret' => $setting->get('media_r2_secret_key'),
-                        'bucket' => $setting->get('media_r2_bucket'),
-                        'url' => $setting->get('media_r2_url'),
-                        'endpoint' => $setting->get('media_r2_endpoint') ?: null,
-                        'use_path_style_endpoint' => (bool) $setting->get('media_r2_use_path_style_endpoint', true),
-                    ]);
-
-                    break;
-                case 'wasabi':
-                    RvMedia::setWasabiDisk([
-                        'key' => $setting->get('media_wasabi_access_key_id'),
-                        'secret' => $setting->get('media_wasabi_secret_key'),
-                        'region' => $setting->get('media_wasabi_default_region'),
-                        'bucket' => $setting->get('media_wasabi_bucket'),
-                        'root' => $setting->get('media_wasabi_root', '/'),
-                    ]);
-
-                    break;
-
-                case 'bunnycdn':
-                    RvMedia::setBunnyCdnDisk([
-                        'hostname' => $setting->get('media_bunnycdn_hostname'),
-                        'storage_zone' => $setting->get('media_bunnycdn_zone'),
-                        'api_key' => $setting->get('media_bunnycdn_key'),
-                        'region' => $setting->get('media_bunnycdn_region'),
-                    ]);
-
-                    break;
-
-                case 'do_spaces':
-                    RvMedia::setDoSpacesDisk([
+                case 'digitalocean':
+                    RvMedia::setDigitalOceanDisk([
                         'key' => $setting->get('media_do_spaces_access_key_id'),
                         'secret' => $setting->get('media_do_spaces_secret_key'),
                         'region' => $setting->get('media_do_spaces_default_region'),
@@ -224,18 +205,6 @@ class MediaServiceProvider extends ServiceProvider
 
                     break;
             }
-        });
-
-        DashboardMenu::default()->beforeRetrieving(function (): void {
-            DashboardMenu::make()
-                ->registerItem(
-                    DashboardMenuItem::make()
-                        ->id('cms-core-media')
-                        ->priority(999)
-                        ->icon('ti ti-folder')
-                        ->name('core/media::media.menu_name')
-                        ->route('media.index')
-                );
         });
 
         if ($this->app->runningInConsole()) {

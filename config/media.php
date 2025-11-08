@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'route' => [
+        'prefix' => 'media',
+        'middleware' => ['web', 'auth'],
+    ],
     'sizes' => [
         'thumb' => '150x150',
     ],
@@ -18,15 +22,15 @@ return [
     ],
     'libraries' => [
         'stylesheets' => [
-            'vendor/core/core/media/libraries/jquery-context-menu/jquery.contextMenu.min.css',
-            'vendor/core/core/media/css/media.css',
+            'vendor/botble/media/libraries/jquery-context-menu/jquery.contextMenu.min.css',
+            'vendor/botble/media/css/media.css',
         ],
         'javascript' => [
-            'vendor/core/core/media/libraries/lodash/lodash.min.js',
-            'vendor/core/core/base/libraries/dropzone/dropzone.js',
-            'vendor/core/core/media/libraries/jquery-context-menu/jquery.ui.position.min.js',
-            'vendor/core/core/media/libraries/jquery-context-menu/jquery.contextMenu.min.js',
-            'vendor/core/core/media/js/media.js',
+            'vendor/botble/media/libraries/lodash/lodash.min.js',
+            'vendor/botble/media/libraries/jquery-context-menu/jquery.ui.position.min.js',
+            'vendor/botble/media/libraries/jquery-context-menu/jquery.contextMenu.min.js',
+            'vendor/botble/media/js/media.js',
+            'vendor/botble/media/js/integrate.js',
         ],
     ],
     'allowed_mime_types' => env(
@@ -168,4 +172,6 @@ return [
         '#c0392b',
     ],
     'use_storage_symlink' => env('RV_MEDIA_USE_STORAGE_SYMLINK', false),
+
+    'settings' => [],
 ];
