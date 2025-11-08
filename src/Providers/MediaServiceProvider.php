@@ -44,9 +44,9 @@ class MediaServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app->singleton('botble.base.helper', fn () => new BaseHelper());
-        $this->app->singleton('botble.base.html', fn () => new HtmlBuilder());
-        $this->app->singleton('botble.base.admin-helper', fn ($app) => new AdminHelper($app['router'], $app['request']));
+        $this->app->singleton('BotbleMedia.base.helper', fn () => new BaseHelper());
+        $this->app->singleton('BotbleMedia.base.html', fn () => new HtmlBuilder());
+        $this->app->singleton('BotbleMedia.base.admin-helper', fn ($app) => new AdminHelper($app['router'], $app['request']));
         $this->app->singleton(HookManager::class, fn ($app) => new HookManager($app));
 
         $this->app->singleton(SettingStore::class, function ($app) {
@@ -237,7 +237,7 @@ class MediaServiceProvider extends ServiceProvider
             if (file_exists($path)) {
                 $this->publishes([
                     $path => config_path($file . '.php'),
-                ], 'botble-media-config');
+                ], 'BotbleMedia-media-config');
             }
         }
 

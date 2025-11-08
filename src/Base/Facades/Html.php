@@ -12,6 +12,6 @@ class Html extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'botble.base.html';
+        return 'BotbleMedia.base.html';
     }
 }
