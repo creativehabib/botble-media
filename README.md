@@ -73,3 +73,21 @@ If you need popup integration for editors or form fields, the `/media/popup` rou
 When running in the console the service provider registers several artisan commands for thumbnail generation, cropping, watermark insertion, and clearing temporary chunk files. These commands are available once the package is installed and can be scheduled as needed.【F:src/Providers/MediaServiceProvider.php†L180-L208】
 
 With these steps you can plug the Botble Media manager into an existing Laravel project and tailor it to match your storage, authorisation, and UI requirements.
+
+## Troubleshooting
+
+### `Could not find a version of package botblemedia/media-manager` during installation
+
+The package is still awaiting its first tagged release, so Composer will only install it when you either:
+
+- Require the development branch explicitly: `composer require botblemedia/media-manager:dev-main`
+- Lower your application's minimum stability by adding the snippet below to `composer.json` (keep `prefer-stable` to avoid pulling in other dev dependencies):
+
+  ```json
+  {
+      "minimum-stability": "dev",
+      "prefer-stable": true
+  }
+  ```
+
+After updating `composer.json`, run `composer update botblemedia/media-manager` to retry the installation.
