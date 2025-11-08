@@ -12,8 +12,10 @@ Botble Media is a drop-in media library built for Laravel 10 and 11 projects. It
 ## 1. Install the package
 
 ```bash
-composer require botblemedia/media-manager
+composer require botblemedia/media-manager:dev-main
 ```
+
+> **Heads up:** the package has not been tagged with a stable release yet. If your application enforces `"minimum-stability": "stable"` you will see an error like `Could not find a version of package botblemedia/media-manager matching your minimum-stability (stable)` when installing. You can resolve this either by requiring the `dev-main` constraint (as above) or by lowering your minimum stability (e.g. add `"minimum-stability": "dev", "prefer-stable": true` to your `composer.json`).
 
 The service provider and the `RvMedia` facade are auto-discovered through the package's `composer.json`, so you do not need to register them manually.【F:composer.json†L36-L44】
 
