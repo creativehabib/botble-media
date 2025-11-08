@@ -12,8 +12,10 @@ Botble Media হলো Laravel 10 এবং 11 অ্যাপ্লিকেশ
 ## ১. প্যাকেজ ইন্সটল করুন
 
 ```bash
-composer require botblemedia/media-manager
+composer require botblemedia/media-manager:dev-main
 ```
+
+> **দ্রষ্টব্য:** প্যাকেজটির এখনো কোনো স্থিতিশীল (stable) রিলিজ ট্যাগ নেই। আপনার প্রজেক্টে যদি `"minimum-stability": "stable"` বাধ্যতামূলক থাকে, তবে ইন্সটলের সময় `Could not find a version of package botblemedia/media-manager matching your minimum-stability (stable)` এর মতো ত্রুটি দেখা যাবে। সমাধান হিসেবে `dev-main` কন্সট্রেইন্ট ব্যবহার করুন (উপরের কমান্ডের মতো) অথবা আপনার `composer.json` ফাইলে `"minimum-stability": "dev", "prefer-stable": true` যোগ করে মিনিমাম স্টেবিলিটি কমিয়ে দিন।
 
 প্যাকেজটির সার্ভিস প্রোভাইডার এবং `RvMedia` ফ্যাসাড `composer.json` এর মাধ্যমে স্বয়ংক্রিয়ভাবে রেজিস্টার হয়, তাই আপনাকে আলাদা করে যোগ করতে হবে না।【F:composer.json†L36-L44】
 
