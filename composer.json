@@ -2,6 +2,7 @@
     "name": "botblemedia/media-manager",
     "description": "Standalone Laravel package for the Botble CMS media manager.",
     "type": "library",
+    "version": "1.0.0",
     "license": "MIT",
     "require": {
         "php": "^8.2",
