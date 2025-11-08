@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "botblemedia/media-manager": "dev-master",
         "illuminate/support": "^10.0|^11.0|^12.0",
         "illuminate/filesystem": "^10.0|^11.0|^12.0",
         "illuminate/http": "^10.0|^11.0|^12.0",
@@ -46,6 +45,6 @@
             }
         }
     },
-    "minimum-stability": "",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
