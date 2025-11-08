@@ -85,11 +85,14 @@ class MediaServiceProvider extends ServiceProvider
             ->loadHelpers()
             ->loadAndPublishConfigurations(['media'])
             ->loadAndPublishConfigurations(['permissions'])
+            ->publishConfigToRoot(['media'])
             ->loadMigrations()
             ->loadAndPublishTranslations()
             ->loadAndPublishViews()
             ->loadRoutes()
             ->publishAssets();
+
+        $this->synchronizeMediaConfig();
 
         $config = $this->app->make('config');
         $setting = $this->app->make(SettingStore::class);
@@ -224,5 +227,37 @@ class MediaServiceProvider extends ServiceProvider
                 }
             });
         }
+    }
+
+    protected function publishConfigToRoot(array $files): static
+    {
+        foreach ($files as $file) {
+            $path = $this->modulePath('config' . DIRECTORY_SEPARATOR . $file . '.php');
+
+            if (file_exists($path)) {
+                $this->publishes([
+                    $path => config_path($file . '.php'),
+                ], 'botble-media-config');
+            }
+        }
+
+        return $this;
+    }
+
+    protected function synchronizeMediaConfig(): void
+    {
+        $config = $this->app->make('config');
+
+        $coreMediaConfig = $config->get('core.media.media', []);
+        $rootMediaConfig = $config->get('media', []);
+
+        if (empty($coreMediaConfig) && empty($rootMediaConfig)) {
+            return;
+        }
+
+        $merged = array_replace_recursive($coreMediaConfig, $rootMediaConfig);
+
+        $config->set('core.media.media', $merged);
+        $config->set('media', $merged);
     }
 }
