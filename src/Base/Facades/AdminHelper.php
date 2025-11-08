@@ -12,6 +12,6 @@ class AdminHelper extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'botble.base.admin-helper';
+        return 'BotbleMedia.base.admin-helper';
     }
 }

@@ -42,7 +42,7 @@ trait LoadAndPublishDataTrait
 
             $this->publishes([
                 $path => config_path(str_replace('/', DIRECTORY_SEPARATOR, $this->moduleNamespace) . DIRECTORY_SEPARATOR . $file . '.php'),
-            ], 'botble-media-config');
+            ], 'BotbleMedia-media-config');
         }
 
         return $this;
@@ -54,7 +54,7 @@ trait LoadAndPublishDataTrait
 
         $this->loadTranslationsFrom($path, $this->moduleNamespace);
 
-        $this->publishes([$path => lang_path('vendor' . DIRECTORY_SEPARATOR . $this->moduleNamespace)], 'botble-media-translations');
+        $this->publishes([$path => lang_path('vendor' . DIRECTORY_SEPARATOR . $this->moduleNamespace)], 'BotbleMedia-media-translations');
 
         return $this;
     }
@@ -65,7 +65,7 @@ trait LoadAndPublishDataTrait
 
         $this->loadViewsFrom($path, $this->moduleNamespace);
 
-        $this->publishes([$path => resource_path('views/vendor/' . $this->moduleNamespace)], 'botble-media-views');
+        $this->publishes([$path => resource_path('views/vendor/' . $this->moduleNamespace)], 'BotbleMedia-media-views');
 
         return $this;
     }
@@ -98,8 +98,8 @@ trait LoadAndPublishDataTrait
 
         if (is_dir($path)) {
             $this->publishes([
-                $path => public_path('vendor/botble/media'),
-            ], 'botble-media-assets');
+                $path => public_path('vendor/BotbleMedia/media'),
+            ], 'BotbleMedia-media-assets');
         }
 
         return $this;

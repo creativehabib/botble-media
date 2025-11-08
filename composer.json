@@ -1,5 +1,5 @@
 {
-    "name": "botble/media-manager",
+    "name": "BotbleMedia/media-manager",
     "description": "Standalone Laravel package for the Botble CMS media manager.",
     "type": "library",
     "license": "MIT",

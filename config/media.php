@@ -22,15 +22,15 @@ return [
     ],
     'libraries' => [
         'stylesheets' => [
-            'vendor/botble/media/libraries/jquery-context-menu/jquery.contextMenu.min.css',
-            'vendor/botble/media/css/media.css',
+            'vendor/BotbleMedia/media/libraries/jquery-context-menu/jquery.contextMenu.min.css',
+            'vendor/BotbleMedia/media/css/media.css',
         ],
         'javascript' => [
-            'vendor/botble/media/libraries/lodash/lodash.min.js',
-            'vendor/botble/media/libraries/jquery-context-menu/jquery.ui.position.min.js',
-            'vendor/botble/media/libraries/jquery-context-menu/jquery.contextMenu.min.js',
-            'vendor/botble/media/js/media.js',
-            'vendor/botble/media/js/integrate.js',
+            'vendor/BotbleMedia/media/libraries/lodash/lodash.min.js',
+            'vendor/BotbleMedia/media/libraries/jquery-context-menu/jquery.ui.position.min.js',
+            'vendor/BotbleMedia/media/libraries/jquery-context-menu/jquery.contextMenu.min.js',
+            'vendor/BotbleMedia/media/js/media.js',
+            'vendor/BotbleMedia/media/js/integrate.js',
         ],
     ],
     'allowed_mime_types' => env(

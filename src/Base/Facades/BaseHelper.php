@@ -17,6 +17,6 @@ class BaseHelper extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'botble.base.helper';
+        return 'BotbleMedia.base.helper';
     }
 }
