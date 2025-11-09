@@ -33,7 +33,7 @@ class ThumbnailService
         $this->thumbRate = 0.75;
         $this->xCoordinate = null;
         $this->yCoordinate = null;
-        $this->fitPosition = setting('media_thumbnail_crop_position', 'center');
+        $this->fitPosition = config('media.thumbnail_crop_position', 'center');
     }
 
     public function setImage(string $imagePath): self
