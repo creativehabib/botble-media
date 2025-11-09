@@ -3,6 +3,40 @@
 use Botble\Media\Facades\RvMedia;
 use Illuminate\Http\UploadedFile;
 
+if (! function_exists('get_cms_version')) {
+    function get_cms_version(): string
+    {
+        if (function_exists('config')) {
+            foreach ([
+                'core.base.general.cms_version',
+                'core.base.general.version',
+                'packages.core.general.version',
+                'app.version',
+            ] as $key) {
+                $value = config($key);
+
+                if (! empty($value)) {
+                    return (string) $value;
+                }
+            }
+        }
+
+        if (class_exists(\Composer\InstalledVersions::class)) {
+            try {
+                $version = \Composer\InstalledVersions::getPrettyVersion('botblemedia/media-manager');
+
+                if (! empty($version)) {
+                    return (string) $version;
+                }
+            } catch (\OutOfBoundsException $exception) {
+                // Continue to the default version below.
+            }
+        }
+
+        return '1.0.0';
+    }
+}
+
 if (! function_exists('is_image')) {
     /**
      * @deprecated since 5.7
