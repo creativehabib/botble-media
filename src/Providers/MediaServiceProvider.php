@@ -32,7 +32,10 @@ use Illuminate\Filesystem\AwsS3V3Adapter as IlluminateAwsS3V3Adapter;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Event;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 
@@ -227,6 +230,26 @@ class MediaServiceProvider extends ServiceProvider
                 }
             });
         }
+
+        Event::listen(RouteMatched::class, function (): void {
+            if (! function_exists('dashboard_menu')) {
+                return;
+            }
+
+            if (! Route::has('media.index')) {
+                return;
+            }
+
+            dashboard_menu()->registerItem([
+                'id' => 'cms-core-media',
+                'priority' => 5,
+                'parent_id' => null,
+                'name' => trans('core/media::media.menu_name'),
+                'icon' => 'ti ti-photo',
+                'url' => route('media.index'),
+                'permissions' => ['media.index'],
+            ]);
+        });
     }
 
     protected function publishConfigToRoot(array $files): static
